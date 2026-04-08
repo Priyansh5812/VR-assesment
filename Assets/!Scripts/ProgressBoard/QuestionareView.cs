@@ -27,6 +27,7 @@ public class QuestionareView : IMonoState
         InitToggleListeners();
         data.backBtn.onClick.AddListener(GoBack);
         data.confirmBtn.onClick.AddListener(ConfirmAnswer);
+        data.retryBtn.onClick.AddListener(OnRetry);
         LoadQuestion();
     }
 
@@ -45,6 +46,7 @@ public class QuestionareView : IMonoState
             });
         }
     }
+
 
     public void Start(Action OnStartCompleted = null)
     {
@@ -77,7 +79,7 @@ public class QuestionareView : IMonoState
         }
     }
 
-    async void ShowReport()
+    void ShowReport()
     {
         // Report View Updation 
 
@@ -138,6 +140,12 @@ public class QuestionareView : IMonoState
         data.backBtn.gameObject.SetActive(assesmentIndex > 0);
     }
 
+    void OnRetry()
+    {
+        data.cgReport.interactable = data.cgReport.blocksRaycasts = false;
+        EventManager.OnRetry?.Invoke();
+    }
+
     public void OnDisable(Action OnDisableCompleted = null)
     {
         for (int i = 0; i < data.answerToggles.Length; i++)
@@ -147,7 +155,7 @@ public class QuestionareView : IMonoState
 
         data.backBtn.onClick.RemoveListener(GoBack);
         data.confirmBtn.onClick.RemoveListener(ConfirmAnswer);
-
+        data.retryBtn.onClick.AddListener(OnRetry);
         OnDisableCompleted?.Invoke();
     }
 }
