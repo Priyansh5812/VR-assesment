@@ -3,12 +3,19 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
+// View controller responsible for rendering and handling the questionnaire UI
+// Implements IMonoState so it can be managed by the ProgressBoardController state machine
 public class QuestionareView : IMonoState
 {
+    // Data container that holds references to UI elements for this view
     QuestionareViewData data;
+    // Reference back to the owning controller for triggering state changes
     ProgressBoardController controller;
+    // Stores selected answer indices for each question. -1 indicates unanswered
     int[] assesmentChoices;
+    // Current question index being displayed
     int assesmentIndex = 0;
+    // Tracks whether this view has been started before (used by the state machine)
     public bool IsAlreadyTriggered { get; private set; }
 
     public QuestionareView(ProgressBoardController controller, QuestionareViewData data)
@@ -19,6 +26,7 @@ public class QuestionareView : IMonoState
         Array.Fill(assesmentChoices, -1);
     }
 
+    // Called when the state is enabled - set up UI and listeners
     public void OnEnable(Action OnEnableCompleted = null)
     {   
         OnEnableCompleted?.Invoke();
@@ -54,6 +62,7 @@ public class QuestionareView : IMonoState
         OnStartCompleted?.Invoke();
     }
 
+    // Mark the selected answer for the current question and update toggles
     void SelectAnswer(int toggleIndex)
     {
         Debug.Log("ToggleIndex = " + toggleIndex);
@@ -81,7 +90,7 @@ public class QuestionareView : IMonoState
 
     void ShowReport()
     {
-        // Report View Updation 
+        // Update report UI with selected answers and correctness indicators
 
         int c = 0;
         for (int i = 0; i < data.questionBank.questionData.Length; i++)
@@ -155,7 +164,7 @@ public class QuestionareView : IMonoState
 
         data.backBtn.onClick.RemoveListener(GoBack);
         data.confirmBtn.onClick.RemoveListener(ConfirmAnswer);
-        data.retryBtn.onClick.AddListener(OnRetry);
+        data.retryBtn.onClick.RemoveListener(OnRetry);
         OnDisableCompleted?.Invoke();
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Handles a fullscreen blackout effect by driving a material property.
+// Used on startup and when the user retries to smoothly transition the screen.
 public class CameraBlackout : MonoBehaviour
 {
     [SerializeField] Material material;

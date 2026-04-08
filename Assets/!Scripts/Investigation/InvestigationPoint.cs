@@ -2,6 +2,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+// Represents a point in the scene that can be investigated by the player.
+// Drives a small two-phase UI sequence while the player focuses on this point.
 public class InvestigationPoint : MonoBehaviour , IInvestigationPoint
 {   
     [SerializeField] float maxRadius;
